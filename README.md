@@ -33,6 +33,8 @@ npm run dev
 
 ### Em um terminal na pasta "frontend" digite:
 
+npm i -g @quasar/cli
+
 npm i
 
 quasar dev
