@@ -1,0 +1,40 @@
+backend/node_modules/
+backend/package-lock.json
+backend/yarn.lock
+
+frontend/.env
+frontend/.DS_Store
+frontend/.thumbs.db
+frontend/node_modules
+frontend/yarn.lock
+frontend/package-lock.json
+
+# Quasar core related directories
+frontend/.quasar
+frontend/dist
+
+# Cordova related directories and files
+frontend/src-cordova/node_modules
+frontend/src-cordova/platforms
+frontend/src-cordova/plugins
+frontend/src-cordova/www
+
+# Capacitor related directories and files
+frontend/src-capacitor/www
+frontend/src-capacitor/node_modules
+
+# BEX related directories and files
+frontend/src-bex/www
+frontend/src-bex/js/core
+
+# Log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Editor directories and files
+frontend/.idea
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
