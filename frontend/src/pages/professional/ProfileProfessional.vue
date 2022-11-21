@@ -79,6 +79,8 @@ export default {
       last_name: ref(""),
       birth_date: ref(""),
     });
+    const password = ref(null);
+    const password2 = ref(null);
 
     onMounted(async () => {
       await api
@@ -105,12 +107,12 @@ export default {
 
       emailRules: [(val) => (val && val.length > 0) || "Campo obrigatório."],
 
-      password: "",
+      password,
       passwordRules: [
         // (val) => val.length > 5 || "Tamanho mínimo: 6 caracteres",
       ],
 
-      password2: "",
+      password2,
       password2Rules: [],
 
       router,
@@ -131,8 +133,6 @@ export default {
         }
       }
 
-      // const professional = this.professional;
-
       await api
         .put("/profile", this.professional)
         .then((res) => {
@@ -141,7 +141,8 @@ export default {
             color: "positive",
             message: "Perfil atualizado!",
           });
-
+          this.password = "";
+          this.password2 = "";
           this.router.push({ name: "ProfileProfessional" });
         })
         .catch((error) => {

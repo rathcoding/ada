@@ -66,9 +66,23 @@
                     <div class="job-title">{{ job.jobTitle }}</div>
                   </div>
                 </div>
-
-                <div class="col-auto">
-                  <div class="q-ml-md round">{{ job.match }}%</div>
+                <div>
+                  <div class="match-info" style="z-index: 9">
+                    <div
+                      class="q-ml-md round"
+                      :style="{
+                        opacity: job.match * 0.01,
+                        backgroundColor: 'green',
+                      }"
+                    >
+                      {{ job.match }}%
+                    </div>
+                  </div>
+                  <div class="match-info">
+                    <div class="q-ml-md round" style="background-color: grey">
+                      {{ job.match }}%
+                    </div>
+                  </div>
                 </div>
               </div>
             </q-card-section>
@@ -103,9 +117,23 @@
                 <div class="job-title">{{ jobSelected.jobTitle }}</div>
               </div>
             </div>
-
-            <div class="col-auto">
-              <div class="q-ml-md round">{{ jobSelected.match }}%</div>
+            <div>
+              <div class="match-info" style="z-index: 9">
+                <div
+                  class="q-ml-md round"
+                  :style="{
+                    opacity: jobSelected.match * 0.01,
+                    backgroundColor: 'green',
+                  }"
+                >
+                  {{ jobSelected.match }}%
+                </div>
+              </div>
+              <div class="match-info">
+                <div class="q-ml-md round" style="background-color: grey">
+                  {{ jobSelected.match }}%
+                </div>
+              </div>
             </div>
           </div>
         </q-card-section>
@@ -155,7 +183,7 @@
                   class="bar"
                   :style="{
                     backgroundColor: colors[index],
-                    width: skill.matchSkillProfessional,
+                    width: `${335 * (skill.matchSkillProfessional / 100)}px`,
                     zIndex: 9,
                   }"
                 ></div>
@@ -203,7 +231,7 @@ import { onMounted, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
-import { matchSkill, softMatch } from "../../utils/match";
+import { matchSkill, softMatch, match } from "../../utils/match";
 
 let optionsForFilter = {};
 
@@ -217,7 +245,7 @@ export default {
     const query = ref([]);
     const jobs = ref([]);
     const jobSelected = ref({});
-    let skillProfessional = ref([]);
+    const skillProfessional = ref([]);
 
     onMounted(async () => {
       await api
@@ -304,7 +332,7 @@ export default {
         .then((res) => {
           this.skillProfessional = res.data.skillsPro;
           for (let job of res.data.job) {
-            job["match"] = parseInt(softMatch(res.data.skillsPro, job.skills));
+            job["match"] = parseInt(match(job.skills, res.data.skillsPro));
             job.skills.forEach((skill, index) => {
               job.skills[index]["matchSkillProfessional"] = parseInt(
                 matchSkill(skill, res.data.skillsPro)
@@ -340,7 +368,7 @@ export default {
         .catch((err) => {
           this.$q.notify({
             color: "negative",
-            message: "Erro no sistema. Tente mais tarde.",
+            message: err.response.data,
           });
         });
     },
@@ -354,6 +382,13 @@ export default {
 }
 .job-title-section {
   font-size: 20px;
+}
+
+.match-info {
+  width: 66px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .job-subtitle-section {

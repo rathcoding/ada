@@ -80,12 +80,14 @@ export default {
       description: ref(""),
       cnpj: ref(""),
     });
+    const password = ref(null);
+    const password2 = ref(null);
 
     onMounted(async () => {
       await api
         .get("/company")
         .then((res) => {
-          // Ajustar pra inserir os valores retornado no form
+          // Ajustar pra inserir os valores retornados no form
           company.value.name = res.data.name;
           company.value.description = res.data.description;
           company.value.cnpj = res.data.cnpj;
@@ -108,12 +110,12 @@ export default {
 
       cnpjRules: [(val) => (val && val.length >= 14) || "Campo obrigatório."],
 
-      password: "",
+      password,
       passwordRules: [
         // (val) => val.length > 5 || "Tamanho mínimo: 6 caracteres",
       ],
 
-      password2: "",
+      password2,
       password2Rules: [],
 
       router,
@@ -143,7 +145,9 @@ export default {
               color: "positive",
               message: "Perfil atualizado!",
             });
-            this.router.push({ name: "profileCompany" });
+            this.password = "";
+            this.password2 = "";
+            this.router.push({ name: "ProfileCompany" });
           }
         })
         .catch((error) => {

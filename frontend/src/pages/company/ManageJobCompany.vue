@@ -64,7 +64,7 @@
               v-model="job.salary_min"
               type="number"
               prefix="R$"
-              mask="##,##"
+              mask="#,##"
               fill-mask="0"
               reverse-fill-mask
               input-class="text-right"
@@ -138,9 +138,10 @@
         class="row q-py-lg wrap justify-between"
       >
         <q-select
-          :rules="[myRule]"
+          :rules="[(val) => !!val || 'Field is required']"
           filled
           v-model="skill"
+          ref="inputSkillCompany"
           :options="options.skill"
           label="Skill"
           class="col-md-3 col-xs-12"
@@ -170,9 +171,10 @@
         />
 
         <q-select
-          :rules="[myRule]"
+          :rules="[(val) => !!val || 'Field is required']"
           filled
           v-model="level"
+          ref="inputLevelCompany"
           :options="options.level"
           label="Nível"
           class="col-md-3 col-xs-12"
@@ -380,6 +382,8 @@ export default {
     const skill = ref(null);
     const level = ref(null);
     const rows = ref([]);
+    const inputSkillCompany = ref(null);
+    const inputLevelCompany = ref(null);
     const columns = [
       {
         name: "skill",
@@ -541,6 +545,8 @@ export default {
       onDelete,
       applications,
       stageMarkers,
+      inputSkillCompany,
+      inputLevelCompany,
     };
   },
   methods: {
@@ -601,18 +607,23 @@ export default {
         });
     },
     async saveSkill() {
+      const value = {
+        experience: parseFloat(this.experience),
+        skill_id: this.skill,
+        level_id: this.level,
+        job_id: localStorage.getItem("editJobId"),
+      };
+
+      this.experience = null;
+      this.skill = null;
+      this.level = null;
       await api
-        .post("/company/job/skill", {
-          experience: parseFloat(this.experience),
-          skill_id: this.skill,
-          level_id: this.level,
-          job_id: localStorage.getItem("editJobId"),
-        })
+        .post("/company/job/skill", value)
         .then((res) => {
           this.rows.push(res.data);
-          this.experience = null;
-          this.skill = null;
-          this.level = null;
+
+          this.inputSkillCompany.resetValidation();
+          this.inputLevelCompany.resetValidation();
 
           if (this.rows.length > 0) {
             this.disabled = false;
@@ -662,11 +673,6 @@ export default {
             message: "Erro no sistema. Tente mais tarde.",
           });
         });
-    },
-    myRule(val) {
-      if (val === null) {
-        return "You must make a selection!";
-      }
     },
     manageApplication(application) {
       localStorage.setItem("editApplicationId", application.id);

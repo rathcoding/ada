@@ -34,7 +34,6 @@
             :options="options.skill"
             @filter="filterFn"
             label="Adicione os skills que a profissional precisa ter..."
-            :rules="[myRule]"
           />
 
           <q-btn
@@ -72,9 +71,23 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="col-auto">
-                  <div class="q-ml-md round">{{ professional.match }}%</div>
+                <div>
+                  <div class="match-info" style="z-index: 9">
+                    <div
+                      class="q-ml-md round"
+                      :style="{
+                        opacity: professional.match * 0.01,
+                        backgroundColor: 'green',
+                      }"
+                    >
+                      {{ professional.match }}%
+                    </div>
+                  </div>
+                  <div class="match-info">
+                    <div class="q-ml-md round" style="background-color: grey">
+                      {{ professional.match }}%
+                    </div>
+                  </div>
                 </div>
               </div>
             </q-card-section>
@@ -99,7 +112,7 @@
                   ,
                 </div>
               </div>
-              <div v-if="professional.skills.length > 3">, ...</div>
+              <div v-if="professional.skills.length > 3">...</div>
             </q-card-section>
           </div>
         </q-card>
@@ -109,20 +122,40 @@
 
   <q-dialog v-model="proDialog">
     <q-card style="min-width: 750px">
-      <q-card-section>
-        <div class="row items-center no-wrap">
-          <div class="col">
-            <div class="professional">{{ professionalDetails.name }}</div>
-            <div class="subtitle">
-              <div class="professional-email">
-                {{ professionalDetails.email }}
+      <q-card-section class="row items-center q-pb-none">
+        <q-card-section class="col-md-12">
+          <div class="row items-center no-wrap">
+            <div class="col">
+              <div class="company">{{ professionalDetails.name }}</div>
+              <div class="subtitle">
+                <div class="professional-email">
+                  {{ professionalDetails.email }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="match-info" style="z-index: 9">
+                <div
+                  class="q-ml-md round"
+                  :style="{
+                    opacity: professionalDetails.match * 0.01,
+                    backgroundColor: 'green',
+                  }"
+                >
+                  {{ professionalDetails.match }}%
+                </div>
+              </div>
+              <div class="match-info">
+                <div class="q-ml-md round" style="background-color: grey">
+                  {{ professionalDetails.match }}%
+                </div>
               </div>
             </div>
           </div>
+        </q-card-section>
 
-          <div class="col-auto">
-            <div class="q-ml-md round">{{ professionalDetails.match }}%</div>
-          </div>
+        <div class="close-btn">
+          <q-btn icon="close" flat round dense v-close-popup />
         </div>
       </q-card-section>
 
@@ -306,12 +339,6 @@ export default {
           });
         });
     },
-
-    myRule(val) {
-      if (val === null) {
-        return "You must make a selection!";
-      }
-    },
   },
 };
 </script>
@@ -319,6 +346,17 @@ export default {
 <style>
 .skill-title-section {
   font-size: 20px;
+}
+
+.professional-infos {
+  width: 210px;
+}
+
+.match-info {
+  width: 66px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .skill-subtitle-section {

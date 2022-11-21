@@ -26,9 +26,10 @@
         class="row q-pb-lg wrap justify-between"
       >
         <q-select
-          :rules="[myRule]"
+          :rules="[(val) => !!val || 'Field is required']"
           filled
           v-model="skill"
+          ref="inputSkillProfessional"
           :options="options.skill"
           label="Skill"
           class="col-md-3 col-xs-12"
@@ -58,9 +59,10 @@
         />
 
         <q-select
-          :rules="[myRule]"
+          :rules="[(val) => !!val || 'Field is required']"
           filled
           v-model="level"
+          ref="inputLevelProfessional"
           :options="options.level"
           label="Nível"
           class="col-md-3 col-xs-12"
@@ -123,6 +125,8 @@ export default {
     const experience = ref(null);
     const skill = ref(null);
     const level = ref(null);
+    const inputSkillProfessional = ref(null);
+    const inputLevelProfessional = ref(null);
     const columns = [
       {
         name: "skill",
@@ -228,22 +232,28 @@ export default {
       filterFn,
       onDelete,
       onEdit,
+      inputSkillProfessional,
+      inputLevelProfessional,
     };
   },
   methods: {
     async saveSkill() {
+      const value = {
+        experience: parseFloat(this.experience),
+        skill_id: this.skill,
+        level_id: this.level,
+      };
+
+      this.skill = null;
+      this.level = null;
+      this.experience = null;
+
       await api
-        .post("/skill", {
-          experience: parseFloat(this.experience),
-          skill_id: this.skill,
-          level_id: this.level,
-        })
+        .post("/skill", value)
         .then((res) => {
           this.rows.push(res.data);
-
-          this.experience = null;
-          this.skill = null;
-          this.level = null;
+          this.inputSkillProfessional.resetValidation();
+          this.inputLevelProfessional.resetValidation();
 
           this.$q.notify({
             icon: "done",
@@ -267,6 +277,7 @@ export default {
           });
         });
     },
+
     async removeSkill(row) {
       await api
         .delete(`/skill/${row.id}`)

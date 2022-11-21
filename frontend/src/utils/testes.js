@@ -6,26 +6,12 @@
 function match(skillsJob, skillsPro) {
   let totSkills = 0;
   let matchJob = 0.0;
-  let matchLvl = 0.0;
-  let matchExp = 0.0;
-  const level = {
-    Júnior: 1,
-    Pleno: 2,
-    Sênior: 3,
-  };
 
   skillsJob.forEach((skJob) => {
     let skPro = skillsPro.find((sk) => sk.id === skJob.id);
 
     if (skPro) {
-      // match Level
-      matchLvl = Math.min(60, 50 * (level[skPro.level] / level[skJob.level]));
-
-      // match Experience
-      matchExp = Math.min(70, 50 * (skPro.experience / skJob.experience));
-
-      // Match geral da canditada/vaga = média dos matches dos skills...
-      matchJob += Math.min(100, matchLvl + matchExp);
+      matchJob += matchSkill(skJob, skPro);
     }
 
     totSkills += 1;
@@ -49,20 +35,15 @@ function matchSkill(skJob, skPro) {
     Pleno: 2,
     Sênior: 3,
   };
-  const skillPro = skPro.find((skill) => skill.id === skJob.id);
 
-  if (skillPro) {
-    // match Level
-    matchLvl = Math.min(60, 50 * (level[skillPro.level] / level[skJob.level]));
+  // match Level
+  matchLvl = Math.min(60, 50 * (level[skPro.level] / level[skJob.level]));
 
-    // match Experience
-    matchExp = Math.min(70, 50 * (skillPro.experience / skJob.experience));
+  // match Experience
+  matchExp = Math.min(70, 50 * (skPro.experience / skJob.experience));
 
-    // Match geral da canditada/vaga = média dos matches dos skills...
-    return Math.min(100, matchLvl + matchExp);
-  }
-
-  return 0;
+  // Match geral da canditada/vaga = média dos matches dos skills...
+  return Math.min(100, matchLvl + matchExp);
 }
 
 //====================================================================
@@ -82,4 +63,38 @@ function softMatch(skillsJob, skillsPro) {
 }
 //====================================================================
 
-export { match, softMatch, matchSkill };
+job = [
+  {
+    id: 1,
+    level: "Sênior",
+    experience: 3.5,
+  },
+  {
+    id: 2,
+    level: "Plano",
+    experience: 2.0,
+  },
+  {
+    id: 55,
+    level: "Júnior",
+    experience: 1.5,
+  },
+];
+
+pro = [
+  {
+    id: 1,
+    level: "Pleno",
+    experience: 3.5,
+  },
+  {
+    id: 55,
+    level: "Pleno",
+    experience: 2.5,
+  },
+  {
+    id: 100,
+    level: "Pleno",
+    experience: 2.5,
+  },
+];
