@@ -128,6 +128,7 @@ export default {
             color: "negative",
             message: "Passwords diferentes.",
           });
+          return;
         } else {
           this.company["password"] = this.password;
         }

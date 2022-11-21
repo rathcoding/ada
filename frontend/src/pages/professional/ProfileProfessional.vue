@@ -125,6 +125,7 @@ export default {
             color: "negative",
             message: "Passwords diferentes.",
           });
+          return;
         } else {
           this.professional["password"] = this.password;
         }
@@ -141,7 +142,7 @@ export default {
             message: "Perfil atualizado!",
           });
 
-          this.router.push({ name: "profileProfessional" });
+          this.router.push({ name: "ProfileProfessional" });
         })
         .catch((error) => {
           console.log(error);
