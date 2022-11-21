@@ -3,6 +3,8 @@ ADA - Professional Social Network for Women in Tech
 
 A plataforma ADA - Professional Social Network for Women in Tech busca conectar empresas com mulheres profissionais da área de Tecnologia da Informação e Conhecimento. Para isso, desenvolvemos uma plataforma online para cadastro das profissionais, dos seus skills, das empresas, das vagas de trabalho e da candidatura das profissionais para estas vagas.
 
+## Grupo Redpill: Andreici Vedovatto (RM87253) e Rafael Rath (RM87251)
+
 ## As tecnologias utilizadas:
 
 No backend: Node.js, Express, TypeScript, TypeORM, PostgreSQL.
