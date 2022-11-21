@@ -15,9 +15,11 @@ No frontend: Vue.js, Quasar, JavaScript, HTML e CSS.
 
 Você precisará instalar:
 
-> Node.js
+> Node.js: https://nodejs.org/
 
-> Docker
+> Docker: https://www.docker.com/
+
+> Quasar Cli: https://quasar.dev/start/quasar-cli
 
 #### Em um terminal na pasta 'backend' digite:
 
